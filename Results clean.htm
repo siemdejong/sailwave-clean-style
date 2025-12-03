@@ -1,0 +1,613 @@
+
+`template.setmenurank(5)`
+`template.setmenutext('&Results ZSN...')`
+`template.setmenumsg('Publish full results table - All competitors with all race results')`
+`template.setdisabled(0)`
+`template.end()`
+
+`string.set("contents",                 "Contents")`
+`string.set("overall",                  "Overall")`
+`string.set("prize.title",              "Prizes")`
+`string.set("prize.col.rank",           "Rank")`
+`string.set("prize.col.category",       "Category")`
+`string.set("prize.col.competitor",     "Competitor")`
+`string.set("codes.title",              "Scoring codes used")`
+`string.set("codes.col.description",    "Description")`
+`string.set("codes.col.code",           "Code")`
+`string.set("codes.col.points",         "Points")`
+`string.set("summary.caption.sailed",   "")`
+`string.set("summary.caption.discards", "")`
+`string.set("summary.caption.tocount",  "")`
+`string.set("summary.caption.toqualify","")`
+`string.set("summary.caption.entries",  "")`
+`string.set("summary.caption.ratings",  "")`
+`string.set("summary.caption.scoring",  "")`
+`string.set("race.col.start",           "Start")`
+`string.set("race.col.finish",          "Finish")`
+`string.set("race.col.elapsed",         "Elapsed")`
+`string.set("race.col.laps",            "Laps")`
+`string.set("race.col.corrected",       "Corrected")`
+`string.set("race.col.bce",             "BCE")`
+`string.set("race.col.bcr",             "BCR")`
+`string.set("race.col.speed",           "Ave speed")`
+`string.set("race.col.place",           "Place")`
+`string.set("race.col.points",          "Points")`
+`string.set("race.start.start",         "Start: ")`
+`string.set("race.start.finishes",      "Finishes: ")`
+`string.set("race.start.time",          "Time: ")`
+`string.set("race.start.distance",      "Distance: ")`
+`string.set("race.start.weight",        "Weight: ")`
+`string.set("race.start.course",        "Course: ")`
+`string.set("race.start.wind",          "Wind: ")`
+`string.set("race.start.winddir",       "Wind dir: ")`
+`string.set("race.start.windstrength",  "Wind strength: ")`
+`string.set("race.start.windspeed",     "Ave wind: ")`
+`string.set("summary.col.race.rank1.td",   "rank1")`
+`string.set("summary.col.race.rank2.td",   "rank2")`
+`string.set("summary.col.race.rank3.td",   "rank3")`
+
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="sailwave results">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<title>Results - `event.name` at `venue.name` `date.year`</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style type="text/css">
+/* Base styles - Sharp edges, vibrant colors */
+body {
+    font-family: 'Open Sans', arial, helvetica, sans-serif;
+    font-size: 72%;
+    text-align: center;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 20px;
+    color: #1a1a2e;
+}
+
+.hardleft {
+    text-align: left;
+    float: left;
+    margin: 15px 0 15px 25px;
+}
+
+.hardright {
+    text-align: right;
+    float: right;
+    margin: 15px 25px 15px 0;
+}
+
+/* Header styles - Sharp edges */
+.header-container {
+    background: none;
+    color: #1a1a2e;
+    padding: 30px;
+    border-radius: 0;
+    margin-bottom: 30px;
+    border: none;
+}
+
+.header-container h1 {
+    font-size: 2.2em;
+    margin: 0 0 10px 0;
+    color: #00d9ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.header-container h2 {
+    font-size: 1.6em;
+    margin: 0;
+    color: #ff6b9d;
+}
+
+.burgee-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.burgee-container img {
+    max-height: 80px;
+    border-radius: 0;
+    border: 2px solid #e94560;
+}
+
+/* Main results table wrapper - Sharp edges */
+.results-wrapper {
+    overflow-x: auto;
+    background: #ffffff;
+    border-radius: 0;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: none;
+}
+
+/* Results table styling */
+table {
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    border-collapse: collapse;
+    margin: 0 auto 30px auto;
+    border: none;
+}
+
+th {
+    background: #ffffff;
+    color: #0f3460;
+    padding: 12px 8px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid #0f3460;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 1px;
+}
+
+td {
+    padding: 10px 8px;
+    border: none;
+    vertical-align: middle;
+    text-align: center;
+    color: #1a1a2e;
+}
+
+/* Alternating row colors - Light theme */
+.even {
+    background-color: #f0f4f8;
+}
+
+.odd {
+    background-color: #ffffff;
+}
+
+/* Place highlighting for overall rankings - Vibrant medals */
+.place1 {
+    font-weight: bold;
+    background: linear-gradient(90deg, #ffd700, #ffec8b) !important;
+    color: #1a1a1a !important;
+    border-left: 4px solid #ff6b00 !important;
+}
+
+.place2 {
+    font-weight: bold;
+    background: linear-gradient(90deg, #c0c0c0, #e8e8e8) !important;
+    color: #1a1a1a !important;
+    border-left: 4px solid #808080 !important;
+}
+
+.place3 {
+    font-weight: bold;
+    background: linear-gradient(90deg, #cd7f32, #daa06d) !important;
+    color: #1a1a1a !important;
+    border-left: 4px solid #8b4513 !important;
+}
+
+.placen {}
+
+/* Race result cells - Bold all race points */
+.rank1 {
+    font-weight: bold;
+}
+
+.rank2 {
+    font-weight: bold;
+}
+
+.rank3 {
+    font-weight: bold;
+}
+
+/* All race column cells should be bold */
+td[class*="race"], col.race + td {
+    font-weight: bold;
+}
+
+/* Discards - slightly muted styling */
+td.discard, td[class*="discard"] {
+    font-weight: 300 !important;
+    opacity: 0.85;
+    color: #444 !important;
+}
+
+/* Rank column styling - no background color, just text styling */
+td:first-child {
+    font-weight: bold;
+    font-size: 1.2em;
+    min-width: 40px;
+    background-color: inherit !important;
+}
+
+/* Caption styling */
+.caption {
+    padding: 15px;
+    text-align: center;
+    border: 0;
+    font-weight: bold;
+    font-size: 1.3em;
+    color: #0f3460;
+    background: #ffffff;
+    text-transform: uppercase;
+}
+
+/* Hide the summary caption (Sailed, Discards, To count, Entries, Scoring system) */
+p.summarycaption, .summarycaption, p:has(.summarycaption) {
+    display: none !important;
+}
+
+/* Hide "Results are final as of..." text */
+p.postdate {
+    display: none !important;
+}
+
+/* Hide "Overall" heading */
+h2.sectiontitle, h3.sectiontitle {
+    display: none !important;
+}
+
+/* Broader selectors to hide summary info */
+.results-wrapper > p, .results-wrapper > h2, .results-wrapper > h3 {
+    display: none !important;
+}
+
+/* National flag */
+.natflag {
+    border: 2px solid #e94560;
+    border-radius: 0;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.nattext {
+    font-size: 0.8em;
+    color: #ff6b9d;
+}
+
+/* Contents section */
+.contents {
+    text-align: left;
+    margin-left: 20%;
+    color: #0f3460;
+}
+
+/* Footer styles - Sharp edges */
+.footer {
+    background: none;
+    color: #1a1a2e;
+    padding: 20px;
+    border-radius: 0;
+    margin-top: 30px;
+    clear: both;
+    border: none;
+}
+
+.footer a {
+    color: #0f3460;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #e94560;
+    text-decoration: underline;
+}
+
+.footer p {
+    margin: 5px 0;
+    text-align: center;
+}
+
+/* Heading styles */
+h1 {
+    font-size: 1.6em;
+    color: #0f3460;
+}
+
+h2 {
+    font-size: 1.4em;
+    color: #e94560;
+}
+
+h3 {
+    font-size: 1.2em;
+    color: #533483;
+}
+
+p {
+    text-align: center;
+    color: #1a1a2e;
+}
+
+/* Sailor name highlighting */
+td a {
+    color: #0f3460;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+td a:hover {
+    color: #e94560;
+}
+
+/* Helmsman column styling (3rd column) - light blue */
+th:nth-child(3) {
+    background-color: #87CEEB !important;
+    color: #1a1a2e !important;
+    font-weight: bold;
+}
+
+td:nth-child(3) {
+    background-color: #b0e0f0 !important;
+    color: #1a1a2e !important;
+}
+
+/* Total points column styling (4th column) - darker blue */
+th:nth-child(4) {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+td:nth-child(4) {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header-container h1 {
+        font-size: 1.6em;
+    }
+    
+    .header-container h2 {
+        font-size: 1.2em;
+    }
+    
+    table {
+        font-size: 0.85em;
+    }
+    
+    th, td {
+        padding: 6px 4px;
+    }
+    
+    .burgee-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+</style>
+
+<script type="text/javascript">
+`html.javascript()`
+</script>
+
+<!-- Override any inline styles and apply podium colors via JavaScript -->
+<style type="text/css">
+td.place1, td.place1 a {
+    background: #ffd700 !important;
+    color: #1a1a1a !important;
+}
+td.place2, td.place2 a {
+    background: #c0c0c0 !important;
+    color: #1a1a1a !important;
+}
+td.place3, td.place3 a {
+    background: #cd7f32 !important;
+    color: #1a1a1a !important;
+}
+</style>
+
+<script type="text/javascript">
+// Apply podium styling based on rank text content - only to rank column
+document.addEventListener('DOMContentLoaded', function() {
+    var rows = document.querySelectorAll('tr.summaryrow');
+    rows.forEach(function(row) {
+        var firstCell = row.querySelector('td:first-child');
+        if (firstCell) {
+            var text = firstCell.textContent.trim().toLowerCase();
+            if (text === '1st' || text === '1') {
+                firstCell.classList.add('podium-gold');
+            } else if (text === '2nd' || text === '2') {
+                firstCell.classList.add('podium-silver');
+            } else if (text === '3rd' || text === '3') {
+                firstCell.classList.add('podium-bronze');
+            }
+        }
+    });
+
+    // Add finish position indicators to race cells
+    addRacePositionIndicators();
+});
+
+function addRacePositionIndicators() {
+    var table = document.querySelector('table.summarytable');
+    if (!table) return;
+
+    var rows = table.querySelectorAll('tr.summaryrow');
+    if (rows.length === 0) return;
+
+    // Find race columns (columns with class "race" in colgroup)
+    var cols = table.querySelectorAll('colgroup col');
+    var raceColumnIndices = [];
+    cols.forEach(function(col, index) {
+        if (col.classList.contains('race')) {
+            raceColumnIndices.push(index);
+        }
+    });
+
+    // For each race column, determine positions from rank classes
+    raceColumnIndices.forEach(function(colIndex) {
+        rows.forEach(function(row) {
+            var cell = row.querySelectorAll('td')[colIndex];
+            if (cell) {
+                var position = null;
+                if (cell.classList.contains('rank1')) position = 1;
+                else if (cell.classList.contains('rank2')) position = 2;
+                else if (cell.classList.contains('rank3')) position = 3;
+                
+                if (position) {
+                    addPositionBadge(cell, position);
+                }
+            }
+        });
+    });
+}
+
+function addPositionBadge(cell, position) {
+    cell.style.position = 'relative';
+    var badge = document.createElement('span');
+    badge.className = 'position-badge';
+    badge.textContent = position;
+    if (position === 1) badge.classList.add('position-gold');
+    else if (position === 2) badge.classList.add('position-silver');
+    else if (position === 3) badge.classList.add('position-bronze');
+    cell.appendChild(badge);
+}
+
+// Make all race cells bold and style discards lighter
+function styleRaceCells() {
+    var table = document.querySelector('table.summarytable');
+    if (!table) return;
+
+    var cols = table.querySelectorAll('colgroup col');
+    var raceColumnIndices = [];
+    cols.forEach(function(col, index) {
+        if (col.classList.contains('race')) {
+            raceColumnIndices.push(index);
+        }
+    });
+
+    var rows = table.querySelectorAll('tr.summaryrow');
+    rows.forEach(function(row) {
+        raceColumnIndices.forEach(function(colIndex) {
+            var cell = row.querySelectorAll('td')[colIndex];
+            if (cell) {
+                // Check if it's a discard (text contains parentheses)
+                var text = cell.textContent.trim();
+                if (text.indexOf('(') !== -1 || text.indexOf(')') !== -1) {
+                    cell.classList.add('discard-cell');
+                } else {
+                    cell.style.fontWeight = 'bold';
+                }
+            }
+        });
+    });
+}
+
+// Call the function on page load
+document.addEventListener('DOMContentLoaded', function() {
+    styleRaceCells();
+    hideUnwantedElements();
+});
+
+// Hide unwanted text elements (Sailed, Discards, Results are final, Overall)
+function hideUnwantedElements() {
+    var allP = document.querySelectorAll('p');
+    allP.forEach(function(p) {
+        var text = p.textContent;
+        if (text.indexOf('Sailed:') !== -1 || 
+            text.indexOf('Results are final') !== -1 ||
+            text.indexOf('Discards:') !== -1 ||
+            text.indexOf('Entries:') !== -1 ||
+            text.indexOf('Scoring system:') !== -1) {
+            p.style.display = 'none';
+        }
+    });
+    
+    // Hide "Overall" headings
+    var headings = document.querySelectorAll('h2, h3');
+    headings.forEach(function(h) {
+        if (h.textContent.trim() === 'Overall') {
+            h.style.display = 'none';
+        }
+    });
+}
+</script>
+
+<style type="text/css">
+/* Podium styling applied via JavaScript - only to rank column */
+td.podium-gold {
+    background: linear-gradient(90deg, #ffd700, #ffec8b) !important;
+    color: #1a1a1a !important;
+}
+td.podium-silver {
+    background: linear-gradient(90deg, #c0c0c0, #e8e8e8) !important;
+    color: #1a1a1a !important;
+}
+td.podium-bronze {
+    background: linear-gradient(90deg, #cd7f32, #daa06d) !important;
+    color: #1a1a1a !important;
+}
+
+/* Position badge in race cells */
+.position-badge {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    font-size: 0.7em;
+    font-weight: bold;
+    padding: 1px 4px;
+    border-radius: 3px;
+    line-height: 1;
+}
+
+.position-badge.position-gold {
+    background: #ffd700;
+    color: #1a1a1a;
+}
+
+.position-badge.position-silver {
+    background: #c0c0c0;
+    color: #1a1a1a;
+}
+
+.position-badge.position-bronze {
+    background: #cd7f32;
+    color: #ffffff;
+}
+
+/* Discard cells - slightly muted styling */
+.discard-cell {
+    font-weight: 300 !important;
+    opacity: 0.85;
+    color: #1d1d1d !important;
+}
+</style>
+
+<link rel="shortcut icon" type="image/ico" href="https://www.sailwave.com/favicon.ico"/>
+</head>
+
+<body>
+
+<div class="header-container">
+    <div style="text-align: center;">
+        <h1 style="color: #0f3460;">`event.name`</h1>
+        <h2 style="color: #0f3460;">`venue.name` - `date.year`</h2>
+    </div>
+</div>
+
+<div class="results-wrapper">
+    `html.resultswiz()`
+</div>
+
+<div class="footer">
+    <p style="margin-top: 15px;">Scored with Sailwave `version` - <a href="https://www.sailwave.com">www.sailwave.com</a></p>
+</div>
+
+</body>
+</html>
+
