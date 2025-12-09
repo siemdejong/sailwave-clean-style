@@ -57,7 +57,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 
-<title>Results - `event.name` at `venue.name` `date.year`</title>
+<title>Results - `event.name` at `venue.name`</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -596,9 +596,21 @@ td.podium-bronze {
 <div class="header-container">
     <div style="text-align: center;">
         <h1 style="color: #0f3460;">`event.name`</h1>
-        <h2 style="color: #0f3460;">`venue.name` - `date.year`</h2>
+        <h2 style="color: #0f3460;">`venue.name` - <span id="currentDate"></span></h2>
     </div>
 </div>
+
+<script type="text/javascript">
+// Display current date
+document.addEventListener('DOMContentLoaded', function() {
+    var dateElement = document.getElementById('currentDate');
+    if (dateElement) {
+        var today = new Date();
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        dateElement.textContent = today.toLocaleDateString('nl-NL', options);
+    }
+});
+</script>
 
 <div class="results-wrapper">
     `html.resultswiz()`

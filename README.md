@@ -5,3 +5,5 @@ This is actually a sailwave template that can be loaded by placing it at `C:\Use
 <img width="1838" height="654" alt="image" src="https://github.com/user-attachments/assets/5911c960-4bbb-47b0-87cc-872d3eac5845" />
 
 To get the exact same output, the user would have to hide all columns from publishing except the columns in the example. 
+
+You probably need to set the locale for your purposes (CTRL+F "locale").
